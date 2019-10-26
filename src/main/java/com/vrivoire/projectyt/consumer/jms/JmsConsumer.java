@@ -23,11 +23,11 @@ public class JmsConsumer {
 
     public String readMessage(String queueName) throws Exception {
         Connection connection = null;
-
+        Session session = null;
         try {
             connection = CONNECTION_FACTORY.createConnection();
             connection.start();
-            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+            session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
             Queue queue = session.createQueue(queueName);
             MessageConsumer consumer = session.createConsumer(queue);
@@ -35,11 +35,14 @@ public class JmsConsumer {
             // blocking
             LOG.info("Wailting for data from the queue.");
             TextMessage textMsg = (TextMessage) consumer.receive();
-            LOG.debug("Received: \n" + textMsg.getText());
+            LOG.trace("Received: \n" + textMsg.getText());
 
             session.close();
             return textMsg.getText();
         } finally {
+            if (session != null) {
+                session.close();
+            }
             if (connection != null) {
                 connection.close();
             }

@@ -34,6 +34,7 @@ public class JmsProducer {
             TextMessage msg = session.createTextMessage(message);
             producer.send(msg);
             session.close();
+            LOG.debug("Send: \n" + msg.getText());
         } catch (JMSException ex) {
             LOG.error(ex.getErrorCode() + " " + ex.getMessage(), ex);
         } finally {
