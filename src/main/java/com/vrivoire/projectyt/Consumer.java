@@ -1,6 +1,7 @@
 package com.vrivoire.projectyt;
 
 import com.vrivoire.projectyt.jms.JmsConsumer;
+import com.vrivoire.projectyt.jms.JmsFactory;
 import com.vrivoire.projectyt.jms.JmsProducer;
 
 import java.io.ByteArrayInputStream;
@@ -30,23 +31,29 @@ public class Consumer {
 
     public static void main(String[] args) {
         Consumer consumer = new Consumer();
+        consumer.start();
     }
 
     public Consumer() {
+    }
 
-        JmsConsumer jmsConsumer = new JmsConsumer();
-        JmsProducer jmsProducer = new JmsProducer();
+    public void start() {
         try {
-            int count = 0;
+            JmsConsumer jmsConsumer = JmsFactory.getInstance().getJmsConsumer();
+            JmsProducer jmsProducer = JmsFactory.getInstance().getJmsProducer();
+            int in_count = 0;
+            int out_count = 0;
+
             while (true) {
                 String xml = jmsConsumer.readMessage(Config.YOU_TUBE_QUEUE_A.getString());
-                count++;
-                LOG.info("Number of SearchResult recieved: " + count + " for " + Config.YOU_TUBE_QUEUE_A.getString());
+                in_count++;
+                LOG.info("Number of SearchResult recieved: " + in_count + " for " + Config.YOU_TUBE_QUEUE_A.getString());
 
                 String newXml = change(xml, "(?i)telecom", "telco");
                 if (newXml != null && newXml.length() != 0) {
                     jmsProducer.sendMessage(Config.YOU_TUBE_QUEUE_B.getString(), newXml);
-                    LOG.info("Message sent to " + Config.YOU_TUBE_QUEUE_B.getString());
+                    out_count++;
+                    LOG.info("Message number " + out_count + " sent to " + Config.YOU_TUBE_QUEUE_B.getString());
                 }
             }
         } catch (Exception e) {

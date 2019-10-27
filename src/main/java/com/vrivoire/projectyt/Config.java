@@ -12,10 +12,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-/**
- *
- * @author Vincent
- */
 public enum Config {
 
     BROKER_TCP_ADDRESS,

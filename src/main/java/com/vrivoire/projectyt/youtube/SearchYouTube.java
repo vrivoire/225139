@@ -23,11 +23,6 @@ import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
 import com.google.api.services.youtube.model.Thumbnail;
 
-/**
- * Code based on YouTube examples
- *
- * @author Vincent
- */
 public class SearchYouTube {
 
     private static final Logger LOG = LogManager.getLogger(SearchYouTube.class);

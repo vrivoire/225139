@@ -1,5 +1,6 @@
 package com.vrivoire.projectyt;
 
+import com.vrivoire.projectyt.jms.JmsFactory;
 import com.vrivoire.projectyt.jms.JmsProducer;
 import com.vrivoire.projectyt.youtube.SearchYouTube;
 
@@ -23,23 +24,31 @@ public class Producer {
     public static void main(String[] args) {
         try {
             Producer producer = new Producer();
+            producer.start();
         } catch (Exception t) {
             LOG.fatal(t);
             System.exit(-1);
         }
     }
 
-    public Producer() throws Exception {
-        List<SearchResult> searchResults = queryYouTube();
+    public Producer() {
+    }
 
-        JmsProducer jmsProducer = new JmsProducer();
-        for (SearchResult searchResult : searchResults) {
-            searchResult.getId().put("URL", BASE_YOUTUBE_URL + searchResult.getId().getVideoId());
-            String xml = getXML(searchResult);
-            jmsProducer.sendMessage(Config.YOU_TUBE_QUEUE_A.getString(), xml);
+    public void start() {
+        try {
+            List<SearchResult> searchResults = queryYouTube();
+            JmsProducer jmsProducer = JmsFactory.getInstance().getJmsProducer();
+            for (SearchResult searchResult : searchResults) {
+                searchResult.getId().put("URL", BASE_YOUTUBE_URL + searchResult.getId().getVideoId());
+                String xml = getXML(searchResult);
+                jmsProducer.sendMessage(Config.YOU_TUBE_QUEUE_A.getString(), xml);
+            }
+
+            LOG.info("Number of SearchResult sent: " + searchResults.size());
+        } catch (Exception e) {
+            LOG.fatal(e.getMessage(), e);
+            System.exit(-1);
         }
-
-        LOG.info("Number of SearchResult sent: " + searchResults.size());
     }
 
     private String getXML(SearchResult searchResult) throws JsonProcessingException {
