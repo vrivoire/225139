@@ -28,17 +28,17 @@ import com.google.api.services.youtube.model.Thumbnail;
  *
  * @author Vincent
  */
-public class SearchYt {
+public class SearchYouTube {
 
-    private static final Logger LOG = LogManager.getLogger(SearchYt.class);
+    private static final Logger LOG = LogManager.getLogger(SearchYouTube.class);
     public static final JsonFactory JSON_FACTORY = new JacksonFactory();
     public static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
 
     private Properties properties = new Properties();
 
-    public SearchYt() throws IOException {
+    public SearchYouTube() throws IOException {
         try {
-            InputStream in = SearchYt.class.getResourceAsStream("/" + Config.YOUTUBE_PROPERTIES_FILENAME.getString());
+            InputStream in = SearchYouTube.class.getResourceAsStream("/" + Config.YOUTUBE_PROPERTIES_FILENAME.getString());
             properties.load(in);
         } catch (IOException e) {
             LOG.fatal("There was an error reading " + Config.YOUTUBE_PROPERTIES_FILENAME.getString() + ": " + e.getMessage(), e);
@@ -46,7 +46,7 @@ public class SearchYt {
         }
     }
 
-    public List<SearchResult> queryYT(String query, boolean showResults) throws GoogleJsonResponseException, IOException {
+    public List<SearchResult> queryYouTube(String query) throws GoogleJsonResponseException, IOException {
         try {
             YouTube youtube = new YouTube.Builder(HTTP_TRANSPORT, JSON_FACTORY, (HttpRequest request) -> {
             }).setApplicationName("projectyt-producer").build();
@@ -58,11 +58,10 @@ public class SearchYt {
             search.setType("video");
             search.setFields("items(id/kind,id/videoId,snippet/title,snippet/thumbnails/default/url)");
             search = search.setMaxResults(Config.NUMBER_OF_VIDEOS_RETURNED.getLong());
-            LOG.info(search.getMaxResults());
-            LOG.info(Config.NUMBER_OF_VIDEOS_RETURNED.getLong());
             SearchListResponse searchResponse = search.execute();
             List<SearchResult> searchResultList = searchResponse.getItems();
-            if (searchResultList != null && showResults) {
+
+            if (searchResultList != null && LOG.isTraceEnabled()) {
                 prettyPrint(searchResultList.iterator(), Config.DEFAULT_QUERY_STRING.getString());
             }
             return searchResultList;
@@ -79,12 +78,12 @@ public class SearchYt {
     }
 
     private void prettyPrint(Iterator<SearchResult> iteratorSearchResults, String query) {
-        LOG.info("\n=============================================================");
-        LOG.info("   First " + Config.NUMBER_OF_VIDEOS_RETURNED.getLong() + " videos for search on \"" + query + "\".");
-        LOG.info("=============================================================\n");
+        LOG.trace("\n=============================================================");
+        LOG.trace("   First " + Config.NUMBER_OF_VIDEOS_RETURNED.getLong() + " videos for search on \"" + query + "\".");
+        LOG.trace("=============================================================\n");
 
         if (!iteratorSearchResults.hasNext()) {
-            LOG.info(" There aren't any results for your query.");
+            LOG.trace(" There aren't any results for your query.");
         }
 
         while (iteratorSearchResults.hasNext()) {
@@ -94,10 +93,10 @@ public class SearchYt {
 
             if (rId.getKind().equals("youtube#video")) {
                 Thumbnail thumbnail = singleVideo.getSnippet().getThumbnails().getDefault();
-                LOG.info(" Video Id:  " + rId.getVideoId());
-                LOG.info(" Title      : " + singleVideo.getSnippet().getTitle());
-                LOG.info(" Thumbnail  : " + thumbnail.getUrl());
-                LOG.info("\n-------------------------------------------------------------\n");
+                LOG.trace(" Video Id:  " + rId.getVideoId());
+                LOG.trace(" Title      : " + singleVideo.getSnippet().getTitle());
+                LOG.trace(" Thumbnail  : " + thumbnail.getUrl());
+                LOG.trace("\n-------------------------------------------------------------\n");
             }
         }
     }

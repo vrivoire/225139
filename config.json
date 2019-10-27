@@ -2,9 +2,9 @@
 {
     "BROKER_TCP_ADDRESS": "tcp://127.0.0.1:11616",
     "DEFAULT_QUERY_STRING": "telecom",
-    "SHOW_RESULTS": "true",
+    "REPLACEMENT_STRING": "telco",
     "NUMBER_OF_VIDEOS_RETURNED": "5",
     "YOUTUBE_PROPERTIES_FILENAME": "youtube.properties",
     "YOU_TUBE_QUEUE_A": "YouTube Queue A",
-    "YOU_TUBE_QUEUE_B": "YouTube Queue B1"
+    "YOU_TUBE_QUEUE_B": "YouTube Queue B"
 }

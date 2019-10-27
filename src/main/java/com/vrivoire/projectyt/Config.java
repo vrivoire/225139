@@ -20,7 +20,7 @@ public enum Config {
 
     BROKER_TCP_ADDRESS,
     DEFAULT_QUERY_STRING,
-    SHOW_RESULTS,
+    REPLACEMENT_STRING,
     NUMBER_OF_VIDEOS_RETURNED,
     YOUTUBE_PROPERTIES_FILENAME,
     YOU_TUBE_QUEUE_A,
@@ -47,7 +47,7 @@ public enum Config {
             map = om.readValue(file, new TypeReference<Map<String, String>>() {
             });
 
-            LOG.debug("Configuration:\n" + om.writeValueAsString(map));
+            LOG.trace("Configuration:\n" + om.writeValueAsString(map));
         } catch (IOException ex) {
             LOG.fatal(ex);
             System.exit(-1);

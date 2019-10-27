@@ -1,8 +1,7 @@
-package com.vrivoire.projectyt.producer;
+package com.vrivoire.projectyt;
 
-import com.vrivoire.projectyt.Config;
-import com.vrivoire.projectyt.producer.jms.JmsProducer;
-import com.vrivoire.projectyt.youtube.SearchYt;
+import com.vrivoire.projectyt.jms.JmsProducer;
+import com.vrivoire.projectyt.youtube.SearchYouTube;
 
 import java.util.List;
 
@@ -31,12 +30,12 @@ public class Producer {
     }
 
     public Producer() throws Exception {
-        List<SearchResult> searchResults = queryYt();
+        List<SearchResult> searchResults = queryYouTube();
 
         JmsProducer jmsProducer = new JmsProducer();
-        for (SearchResult cleanedResult : searchResults) {
-            cleanedResult.getId().put("URL", BASE_YOUTUBE_URL + cleanedResult.getId().getVideoId());
-            String xml = getXML(cleanedResult);
+        for (SearchResult searchResult : searchResults) {
+            searchResult.getId().put("URL", BASE_YOUTUBE_URL + searchResult.getId().getVideoId());
+            String xml = getXML(searchResult);
             jmsProducer.sendMessage(Config.YOU_TUBE_QUEUE_A.getString(), xml);
         }
 
@@ -46,14 +45,13 @@ public class Producer {
     private String getXML(SearchResult searchResult) throws JsonProcessingException {
         OBJECT_MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
         String xml = OBJECT_MAPPER.writeValueAsString(searchResult);
-        LOG.debug(xml);
+        LOG.trace(xml);
         return xml;
     }
 
-    private List<SearchResult> queryYt() throws Exception {
-        SearchYt searchYt = new SearchYt();
-        LOG.info(Config.SHOW_RESULTS.getBoolean());
-        return searchYt.queryYT(Config.DEFAULT_QUERY_STRING.getString(), Config.SHOW_RESULTS.getBoolean());
+    private List<SearchResult> queryYouTube() throws Exception {
+        SearchYouTube searchYouTube = new SearchYouTube();
+        return searchYouTube.queryYouTube(Config.DEFAULT_QUERY_STRING.getString());
     }
 
 }

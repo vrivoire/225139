@@ -1,8 +1,7 @@
-package com.vrivoire.projectyt.consumer;
+package com.vrivoire.projectyt;
 
-import com.vrivoire.projectyt.Config;
-import com.vrivoire.projectyt.consumer.jms.JmsConsumer;
-import com.vrivoire.projectyt.producer.jms.JmsProducer;
+import com.vrivoire.projectyt.jms.JmsConsumer;
+import com.vrivoire.projectyt.jms.JmsProducer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -47,6 +46,7 @@ public class Consumer {
                 String newXml = change(xml, "(?i)telecom", "telco");
                 if (newXml != null && newXml.length() != 0) {
                     jmsProducer.sendMessage(Config.YOU_TUBE_QUEUE_B.getString(), newXml);
+                    LOG.info("Message sent to " + Config.YOU_TUBE_QUEUE_B.getString());
                 }
             }
         } catch (Exception e) {
@@ -82,11 +82,13 @@ public class Consumer {
             StreamResult result = new StreamResult(byteArrayOutputStream);
             transformer.transform(source, result);
 
-            return byteArrayOutputStream.toString();
+            String modifiedXml = byteArrayOutputStream.toString();
+            LOG.trace("Modified XML:" + modifiedXml);
+            return modifiedXml;
         } catch (ParserConfigurationException | SAXException | IOException | TransformerException ex) {
             LOG.error("Error while changing the title: " + ex.getMessage(), ex);
             LOG.error("Input de l'érreur: \n" + xmmlString);
         }
-        return null;
+        return xmmlString;
     }
 }
