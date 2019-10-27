@@ -78,12 +78,12 @@ public class SearchYouTube {
     }
 
     private void prettyPrint(Iterator<SearchResult> iteratorSearchResults, String query) {
-        LOG.trace("\n=============================================================");
-        LOG.trace("   First " + Config.NUMBER_OF_VIDEOS_RETURNED.getLong() + " videos for search on \"" + query + "\".");
-        LOG.trace("=============================================================\n");
+        LOG.debug("\n=============================================================");
+        LOG.debug("   First " + Config.NUMBER_OF_VIDEOS_RETURNED.getLong() + " videos for search on \"" + query + "\".");
+        LOG.debug("=============================================================\n");
 
         if (!iteratorSearchResults.hasNext()) {
-            LOG.trace(" There aren't any results for your query.");
+            LOG.debug(" There aren't any results for your query.");
         }
 
         while (iteratorSearchResults.hasNext()) {
@@ -93,10 +93,10 @@ public class SearchYouTube {
 
             if (rId.getKind().equals("youtube#video")) {
                 Thumbnail thumbnail = singleVideo.getSnippet().getThumbnails().getDefault();
-                LOG.trace(" Video Id:  " + rId.getVideoId());
-                LOG.trace(" Title      : " + singleVideo.getSnippet().getTitle());
-                LOG.trace(" Thumbnail  : " + thumbnail.getUrl());
-                LOG.trace("\n-------------------------------------------------------------\n");
+                LOG.debug(" Video Id:  " + rId.getVideoId());
+                LOG.debug(" Title      : " + singleVideo.getSnippet().getTitle());
+                LOG.debug(" Thumbnail  : " + thumbnail.getUrl());
+                LOG.debug("\n-------------------------------------------------------------\n");
             }
         }
     }

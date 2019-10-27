@@ -45,7 +45,7 @@ public class Producer {
     private String getXML(SearchResult searchResult) throws JsonProcessingException {
         OBJECT_MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
         String xml = OBJECT_MAPPER.writeValueAsString(searchResult);
-        LOG.trace(xml);
+        LOG.debug("getXML\n" + xml);
         return xml;
     }
 

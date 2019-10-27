@@ -47,7 +47,7 @@ public enum Config {
             map = om.readValue(file, new TypeReference<Map<String, String>>() {
             });
 
-            LOG.trace("Configuration:\n" + om.writeValueAsString(map));
+            LOG.debug("Configuration:\n" + om.writeValueAsString(map));
         } catch (IOException ex) {
             LOG.fatal(ex);
             System.exit(-1);

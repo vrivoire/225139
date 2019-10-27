@@ -35,7 +35,7 @@ public class JmsConsumer {
             // blocking
             LOG.info("Wailting for data from the queue.");
             TextMessage textMsg = (TextMessage) consumer.receive();
-            LOG.trace("Received: \n" + textMsg.getText());
+            LOG.debug("Received: \n" + textMsg.getText());
 
             return textMsg.getText();
         } finally {
