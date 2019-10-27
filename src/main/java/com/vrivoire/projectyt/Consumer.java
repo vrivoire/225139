@@ -47,7 +47,6 @@ public class Consumer {
                 if (newXml != null && newXml.length() != 0) {
                     jmsProducer.sendMessage(Config.YOU_TUBE_QUEUE_B.getString(), newXml);
                     LOG.info("Message sent to " + Config.YOU_TUBE_QUEUE_B.getString());
-                    LOG.debug("New xml:\n" + newXml);
                 }
             }
         } catch (Exception e) {
