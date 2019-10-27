@@ -83,7 +83,6 @@ public class Consumer {
             transformer.transform(source, result);
 
             String modifiedXml = byteArrayOutputStream.toString();
-            LOG.trace("Modified XML:" + modifiedXml);
             return modifiedXml;
         } catch (ParserConfigurationException | SAXException | IOException | TransformerException ex) {
             LOG.error("Error while changing the title: " + ex.getMessage(), ex);
