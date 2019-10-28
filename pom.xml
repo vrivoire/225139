@@ -4,6 +4,7 @@
     <groupId>com.vrivoire</groupId>
     <artifactId>ProjectYT</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <description>Youtube API and ActiveMQ demo.</description>
     <packaging>jar</packaging>
     <description>Project YT.</description>
     <developers>
