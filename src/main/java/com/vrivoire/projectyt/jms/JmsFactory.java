@@ -26,10 +26,10 @@ public class JmsFactory {
         return jmsProducer;
     }
 
-    private Object getImplFromInterface(Class<?> clazz) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+    private Object getImplFromInterface(Class<?> clazz) throws Exception {
         String nameImpl = clazz.getPackage().getName() + ".impl." + clazz.getSimpleName() + "Impl";
         Class<?> forName = Class.forName(nameImpl);
-        Object newInstance = forName.newInstance();
+        Object newInstance = forName.getDeclaredConstructor().newInstance();
         return newInstance;
     }
 

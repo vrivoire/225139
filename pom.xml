@@ -4,16 +4,16 @@
     <groupId>com.vrivoire</groupId>
     <artifactId>ProjectYT</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <description>Youtube API and ActiveMQ demo.</description>
-    <packaging>jar</packaging>
-    
+    <description>Youtube API and ActiveMQ demo</description>
     <developers>
         <developer>
             <id>vrivoire</id>
+            <timezone>UTC-5</timezone>
             <name>Vincent Rivoire</name>
             <email>rivoire.vincent@gmail.com</email>
         </developer>
     </developers>
+    <packaging>jar</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -87,6 +87,17 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.1.1</version>
