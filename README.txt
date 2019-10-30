@@ -22,6 +22,24 @@ Decoupling (JmsConsumer, JmsProducer, JMSFactory)
 Bridge (JmsConsumerImpl, JmsProducerImpl)
 Iterator (SearchYouTube, Producer)
 
+
+How to execute your programs 
+
+Open a DOS console and type:
+cd ProjectYT
+start_broker.bat (if the port is already busy you can change it in the file /config.json under BROKER_TCP_ADDRESS, requires restart)
+
+Once the JMS broker has started open another DOS console and type:
+cd ProjectYT
+start_consumer.bat
+
+Once the JMS consumer booted, open another DOS console and type:
+cd ProjectYT
+start_producer.bat
+
+The logs are in the console and in the ProjectYT / ProjectYT.log file.
+The logs level goes from info to debug to better see the I / O (changeable in the file src\main\resources\log4j2.xml, requires recompilation and restart)
+
 Schema describing the messages produced by the solution
 From YouTube to the producer (extract):
 =============================================================
@@ -76,24 +94,6 @@ Unzip ProjectYT.zip
 Open a DOS console and type:
 cd ProjectYT
 mvn clean install
-
-
-How to execute your programs to produce the results previously described
-
-Open a DOS console and type:
-cd ProjectYT
-start_broker.bat (if the port is already busy you can change it in the file /config.json under BROKER_TCP_ADDRESS, requires restart)
-
-Once the JMS broker has started open another DOS console and type:
-cd ProjectYT
-start_consumer.bat
-
-Once the JMS consumer booted, open another DOS console and type:
-cd ProjectYT
-start_producer.bat
-
-The logs are in the console and in the ProjectYT / ProjectYT.log file.
-The logs level goes from info to debug to better see the I / O (changeable in the file src\main\resources\log4j2.xml, requires recompilation and restart)
 
 
 Looking back at the implementation, what would you consider doing differently
